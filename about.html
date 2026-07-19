@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Orchid A+</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  :root{
+    --bg:#00060F; --bg-soft:#050E1C; --panel:#081527;
+    --line: rgba(120,170,220,0.16);
+    --ink:#EAF1F8; --ink-dim:#8FA3B8;
+    --blue:#0970C7; --blue-bright:#30C5FB;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(ellipse at 15% 0%, rgba(9,112,199,0.16), transparent 45%),
+      radial-gradient(ellipse at 85% 15%, rgba(48,197,251,0.10), transparent 40%),
+      var(--bg);
+    color:var(--ink); font-family:'IBM Plex Sans', sans-serif; line-height:1.6;
+  }
+  h1,h2,h3{ font-family:'Poppins', sans-serif; font-weight:600; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:1120px; margin:0 auto; padding:0 28px; }
+
+  nav{ position:sticky; top:0; z-index:50; background:rgba(0,6,15,0.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  nav .wrap{ display:flex; align-items:center; justify-content:space-between; padding:14px 28px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand img{ height:40px; width:auto; display:block; }
+  .brand .wordmark{ font-size:1.2rem; font-weight:600; }
+  .brand .wordmark .plus{ color:var(--blue-bright); }
+  .navlinks{ display:flex; gap:26px; font-size:0.9rem; align-items:center; flex-wrap:wrap; }
+  .navlinks a{ opacity:0.75; transition:opacity 0.2s; }
+  .navlinks a:hover{ opacity:1; color:var(--blue-bright); }
+  .navlinks a.active{ opacity:1; color:var(--blue-bright); }
+  .navlinks .signin-btn{
+    padding:8px 18px; border-radius:6px; opacity:1;
+    background:linear-gradient(135deg, var(--blue), var(--blue-bright)); color:#00121F; font-weight:500;
+  }
+
+  .page-head{ padding:64px 0 40px; border-bottom:1px solid var(--line); }
+  .page-head .eyebrow{ font-size:0.78rem; text-transform:uppercase; color:var(--blue-bright); margin-bottom:16px; display:inline-block; }
+  .page-head h1{ font-size:clamp(2rem, 4.5vw, 2.9rem); max-width:20ch; }
+  .page-head p{ color:var(--ink-dim); margin-top:16px; max-width:60ch; font-size:1.02rem; }
+
+  .section{ padding:56px 0; border-top:1px solid var(--line); }
+  .section:first-of-type{ border-top:none; }
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+  @media (max-width:760px){ .two-col{ grid-template-columns:1fr; } }
+  .section h2{ font-size:1.6rem; margin-bottom:16px; }
+  .section p{ color:var(--ink-dim); font-size:0.98rem; margin-bottom:14px; }
+
+  .values-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:20px; }
+  @media (max-width:760px){ .values-grid{ grid-template-columns:1fr; } }
+  .value-card{
+    background:linear-gradient(180deg, var(--panel), rgba(8,21,39,0.6));
+    border:1px solid var(--line); border-radius:10px; padding:26px;
+  }
+  .value-card .num{ font-family:'IBM Plex Mono', monospace; color:var(--blue-bright); font-size:0.85rem; margin-bottom:10px; }
+  .value-card h3{ font-size:1.1rem; margin-bottom:8px; }
+  .value-card p{ font-size:0.9rem; margin-bottom:0; }
+
+  footer{ padding:36px 0 56px; border-top:1px solid var(--line); margin-top:20px; }
+  footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  footer .foot-links{ display:flex; gap:22px; font-size:0.84rem; color:var(--ink-dim); flex-wrap:wrap; }
+  footer .copy{ font-size:0.78rem; color:var(--ink-dim); opacity:0.7; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">
+      <a href="index.html" style="display:flex; align-items:center; gap:12px;">
+        <img src="assets/logo-mark.png" alt="Orchid A+ logo">
+        <div class="wordmark">Orchid <span class="plus">A+</span></div>
+      </a>
+    </div>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="products.html">Our Products</a>
+      <a href="blog.html">Blog</a>
+      <a href="ai-creations.html">AI Creations</a>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="signin.html" class="signin-btn">Sign In</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head">
+  <div class="wrap">
+    <span class="eyebrow mono">// about us</span>
+    <h1>Data driven. Future focused.</h1>
+    <p>Orchid A+ builds practical tools at the intersection of data, AI, and everyday decisions — starting with health risk screening, and expanding from there.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap two-col">
+    <div>
+      <h2>Why we started</h2>
+      <p>Most data science projects stop at a Jupyter notebook. We wanted to see what happens when a model actually gets put in front of real people — not as a polished, overconfident black box, but as a tool that's honest about what it knows and doesn't know.</p>
+      <p>Health Check and Risk Rewind grew out of exactly that question: could a modest cardiovascular dataset become something genuinely useful, without overselling what it can predict?</p>
+    </div>
+    <div>
+      <h2>What we're building toward</h2>
+      <p>Orchid A+ is expanding beyond health tools into a wider set of practical, data-driven products — automation, AI content creation, and forecasting tools — all built with the same approach: transparent about limitations, useful in practice.</p>
+      <p>Check the Our Products page for what's live now, and what's coming next.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>How we work</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="num mono">01</div>
+        <h3>Transparent by default</h3>
+        <p>We show our work — what the data can and can't tell you, not just a confident-looking number.</p>
+      </div>
+      <div class="value-card">
+        <div class="num mono">02</div>
+        <h3>Useful over flashy</h3>
+        <p>Every tool has to earn its place by being genuinely usable, not just technically impressive.</p>
+      </div>
+      <div class="value-card">
+        <div class="num mono">03</div>
+        <h3>Built to grow</h3>
+        <p>Small, focused products now — with a clear path to more as the lineup expands.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="copy mono">© Orchid A+ — for Digital solutions and services</div>
+    <div class="foot-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Our Products</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

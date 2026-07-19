@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why our stroke risk model plateaued at 0.28 PR-AUC — Orchid A+ Blog</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  :root{
+    --bg:#00060F; --bg-soft:#050E1C; --panel:#081527;
+    --line: rgba(120,170,220,0.16);
+    --ink:#EAF1F8; --ink-dim:#8FA3B8;
+    --blue:#0970C7; --blue-bright:#30C5FB;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(ellipse at 15% 0%, rgba(9,112,199,0.16), transparent 45%),
+      var(--bg);
+    color:var(--ink); font-family:'IBM Plex Sans', sans-serif; line-height:1.7;
+  }
+  h1,h2,h3{ font-family:'Poppins', sans-serif; font-weight:600; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em; }
+  a{ color:var(--blue-bright); text-decoration:none; }
+  .wrap{ max-width:760px; margin:0 auto; padding:0 28px; }
+
+  nav{ position:sticky; top:0; z-index:50; background:rgba(0,6,15,0.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  nav .navwrap{ max-width:1120px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:14px 28px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand img{ height:40px; width:auto; display:block; }
+  .brand .wordmark{ font-size:1.2rem; font-weight:600; color:var(--ink); }
+  .brand .wordmark .plus{ color:var(--blue-bright); }
+  .navlinks{ display:flex; gap:26px; font-size:0.9rem; }
+  .navlinks a{ color:var(--ink); opacity:0.75; }
+  .navlinks a:hover{ opacity:1; }
+
+  .post-head{ padding:56px 0 32px; border-bottom:1px solid var(--line); }
+  .post-head .date{ font-size:0.8rem; color:var(--blue-bright); font-family:'IBM Plex Mono', monospace; }
+  .post-head h1{ font-size:clamp(1.7rem, 4vw, 2.4rem); margin-top:14px; line-height:1.2; }
+  .post-head .meta{ color:var(--ink-dim); font-size:0.9rem; margin-top:16px; }
+
+  article{ padding:40px 0 60px; }
+  article p{ color:#D6E2EC; font-size:1.02rem; margin-bottom:20px; }
+  article h2{ font-size:1.35rem; margin:36px 0 14px; }
+  article ul{ margin:0 0 20px 22px; color:#D6E2EC; }
+  article li{ margin-bottom:8px; }
+  article .highlight{
+    background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    padding:18px 22px; margin:24px 0; font-size:0.95rem; color:var(--ink-dim);
+  }
+  table{ width:100%; border-collapse:collapse; margin:20px 0; font-size:0.92rem; }
+  th,td{ text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); }
+  th{ color:var(--blue-bright); font-weight:500; }
+  td{ color:var(--ink-dim); }
+
+  .back-link{ display:inline-block; margin-top:20px; font-size:0.9rem; }
+
+  footer{ padding:36px 0 56px; border-top:1px solid var(--line); }
+  footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  footer .copy{ font-size:0.78rem; color:var(--ink-dim); opacity:0.7; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navwrap">
+    <div class="brand">
+      <a href="index.html" style="display:flex; align-items:center; gap:12px;">
+        <img src="assets/logo-mark.png" alt="Orchid A+ logo">
+        <div class="wordmark">Orchid <span class="plus">A+</span></div>
+      </a>
+    </div>
+    <div class="navlinks">
+      <a href="blog.html">← All posts</a>
+    </div>
+  </div>
+</nav>
+
+<header class="post-head">
+  <div class="wrap">
+    <span class="date mono">JULY 2026</span>
+    <h1>Why our stroke risk model plateaued at 0.28 PR-AUC — and what that actually means</h1>
+    <p class="meta">A look at the systematic feature search behind Health Check.</p>
+  </div>
+</header>
+
+<article>
+  <div class="wrap">
+    <p>When we started building Health Check, the first version of the model used all 15 available features from a public Framingham-style cardiovascular dataset. Results were middling — and the instinct was to reach for the usual fixes: rebalance the classes, tune hyperparameters, try a fancier model. We tried all three. None of it moved the needle much.</p>
+
+    <p>That plateau turned out to be more informative than the fixes themselves.</p>
+
+    <h2>What we tried first</h2>
+    <p>Standard playbook: SMOTE oversampling to address class imbalance, class-weighted logistic regression, and a switch to Gradient Boosting tuned on PR-AUC instead of ROC-AUC (a more honest metric when the positive class is rare — stroke cases were about 15% of the dataset).</p>
+
+    <table>
+      <tr><th>Approach</th><th>PR-AUC</th></tr>
+      <tr><td>Original logistic regression</td><td>0.294</td></tr>
+      <tr><td>SMOTE + tuned logistic regression</td><td>0.268</td></tr>
+      <tr><td>Class-weighted logistic regression</td><td>0.265</td></tr>
+      <tr><td>Gradient Boosting</td><td>0.260</td></tr>
+    </table>
+
+    <p>Every variant landed in the same narrow band. That's the signature of a feature ceiling, not a modeling problem — if more sophisticated models or resampling could unlock hidden signal, we'd expect to see real separation between these numbers.</p>
+
+    <h2>The systematic search</h2>
+    <p>Instead of trying more models, we ran two direct tests across all 15 features, using 5-fold cross-validated PR-AUC for stability:</p>
+    <ul>
+      <li><strong>Leave-one-feature-out:</strong> drop each feature, see whether PR-AUC gets better or worse without it</li>
+      <li><strong>Univariate power:</strong> how much predictive power does each feature carry completely on its own</li>
+    </ul>
+
+    <p>Five features consistently helped: age, systolic blood pressure, glucose, cigarettes per day, and sex. The other ten — including things you might expect to matter, like BMI, cholesterol, and diabetes status — added essentially nothing once those five were already in the model.</p>
+
+    <div class="highlight">
+      A trimmed model using only those 5 features scored 0.349 PR-AUC in cross-validation — matching or slightly beating the full 15-feature model. Two-thirds of the original feature set was dead weight for this specific target.
+    </div>
+
+    <h2>Why this matters more than another tuning pass</h2>
+    <p>We also ran a learning curve — training the same 5-feature model on 20% up to 100% of the training data — and PR-AUC stayed flat around 0.28 the whole way. If this were a sample-size problem, more data would have helped. It didn't, which confirms the ceiling is about the features themselves, not how much of them we have.</p>
+
+    <p>That's a real, if modest, result: stroke risk from self-reported vitals alone has a known ceiling in the literature, and this dataset reflects that. Pushing past it would need features this dataset simply doesn't have — ECG readings, family history, prior TIA/stroke events.</p>
+
+    <h2>What we shipped instead</h2>
+    <p>Rather than keep tuning against a ceiling, we shipped the simpler 5-feature model — same performance, easier to explain, faster for users to fill in. It's live now as <a href="products.html">Health Check</a>, with the precision limitations stated plainly in the tool itself rather than buried in a README.</p>
+
+    <a class="back-link" href="blog.html">← Back to all posts</a>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="copy mono">© Orchid A+ — for Digital solutions and services</div>
+  </div>
+</footer>
+
+</body>
+</html>
